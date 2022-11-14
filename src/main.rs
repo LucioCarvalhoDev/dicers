@@ -1,6 +1,6 @@
 use std::io::Write;
 
-use clap::{Args, Parser};
+use clap::Parser;
 mod dice;
 use crate::dice::dice::Dice;
 
@@ -28,26 +28,23 @@ fn main() {
             let dice = Dice::new(&def);
             post(&def, &format!("{:?}", dice.roll()), args.output);
         }
-        None => {
-            loop {
-                print!("> ");
-                std::io::stdout().flush().expect("");
+        None => loop {
+            print!("> ");
+            std::io::stdout().flush().expect("");
 
-                let mut input = String::new();
-                std::io::stdin()
-                    .read_line(&mut input)
-                    .expect("erro na leitura de input");
+            let mut input = String::new();
+            std::io::stdin()
+                .read_line(&mut input)
+                .expect("erro na leitura de input");
 
-                input = input.trim().to_string();
+            input = input.trim().to_string();
 
-                if input == "close" || input == "exit" || input == "quit" {
-                    break;
-                }
-
-                let dice = Dice::new(&input);
-                // println!("input: {}", input);
-                post(&dice.def, &format!("{:?}", dice.roll()), args.output);
+            if input == "close" || input == "exit" || input == "quit" {
+                break;
             }
-        }
+
+            let dice = Dice::new(&input);
+            post(&dice.def, &format!("{:?}", dice.roll()), args.output);
+        },
     }
 }
