@@ -1,17 +1,53 @@
-use clap::Parser;
+use std::io::Write;
+
+use clap::{Args, Parser};
 mod dice;
 use crate::dice::dice::Dice;
 
 #[derive(Parser, Debug)]
-struct Args {
-    #[arg(default_value = "1d20")]
-    dice: String,
+struct Cli {
+    #[arg(long, short)]
+    dice: Option<String>,
+    #[arg(long, short, default_value_t = 0)]
+    output: u8,
+}
+
+fn post(expression: &str, message: &str, mode: u8) {
+    match mode {
+        0 => println!("{}", message),                     // minimalist
+        1 => println!("{} -> {:?}", expression, message), // extended
+        _ => panic!("Invalid output mode"),
+    }
 }
 
 fn main() {
-    let args = Args::parse();
+    let args = Cli::parse();
 
-    let d6 = Dice::new(&args.dice);
+    match args.dice {
+        Some(def) => {
+            let dice = Dice::new(&def);
+            post(&def, &format!("{:?}", dice.roll()), args.output);
+        }
+        None => {
+            loop {
+                print!("> ");
+                std::io::stdout().flush().expect("");
 
-    println!("{} -> {:?}", d6.def, d6.roll());
+                let mut input = String::new();
+                std::io::stdin()
+                    .read_line(&mut input)
+                    .expect("erro na leitura de input");
+
+                input = input.trim().to_string();
+
+                if input == "close" || input == "exit" || input == "quit" {
+                    break;
+                }
+
+                let dice = Dice::new(&input);
+                // println!("input: {}", input);
+                post(&dice.def, &format!("{:?}", dice.roll()), args.output);
+            }
+        }
+    }
 }
