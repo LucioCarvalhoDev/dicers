@@ -2,7 +2,9 @@ use std::io::Write;
 
 use clap::Parser;
 mod dice;
+mod funcs;
 use crate::dice::dice::Dice;
+use crate::funcs::funcs::*;
 
 #[derive(Parser, Debug)]
 struct Cli {
@@ -46,5 +48,19 @@ fn main() {
             let dice = Dice::new(&input);
             post(&dice.def, &format!("{:?}", dice.roll()), args.output);
         },
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn functions() {
+        use crate::funcs::funcs::*;
+
+        let example = vec![1, 2, 3, 4, 5, 6];
+        assert_eq!(sum(&example), 21);
+        assert_eq!(max(&example), 6);
+        assert_eq!(min(&example), 1);
+        assert_eq!(med(&example), 3.5);
     }
 }
