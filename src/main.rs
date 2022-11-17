@@ -1,6 +1,7 @@
 use std::io::Write;
 
 use clap::Parser;
+use lazy_static::lazy_static;
 mod dice;
 mod funcs;
 use crate::dice::dice::Dice;
@@ -24,13 +25,15 @@ fn post(expression: &str, message: &str, mode: u8) {
 }
 
 fn parser(expression: &str) -> String {
-    let reg_dice = Regex::new(r"\d*d\d+").unwrap();
-    let reg_func = Regex::new(r"[a-zA-Z]{3}\(.*\)").unwrap();
-    let reg_func_arg = Regex::new(r"\[.*\]").unwrap();
+    lazy_static! {
+        static ref REG_DICE: Regex = Regex::new(r"\d*d\d+").unwrap();
+        static ref REG_FUNC: Regex = Regex::new(r"[a-zA-Z]{3}\(.*\)").unwrap();
+        static ref REG_FUNC_ARG: Regex = Regex::new(r"\[.*\]").unwrap();
+    }
 
     let mut expanded = expression.clone().to_string();
 
-    for cap in reg_dice.captures_iter(expression) {
+    for cap in REG_DICE.captures_iter(expression) {
         let def_dice = cap.get(0).unwrap().as_str();
         let rolled = format!("{:?}", Dice::new(def_dice).roll());
         expanded = expanded.replace(def_dice, &rolled);
@@ -38,9 +41,9 @@ fn parser(expression: &str) -> String {
 
     let mut resolved = expanded.clone().to_string();
 
-    for cap in reg_func.captures_iter(&expanded) {
+    for cap in REG_FUNC.captures_iter(&expanded) {
         let def_func = cap.get(0).unwrap().as_str();
-        let def_arg = reg_func_arg
+        let def_arg = REG_FUNC_ARG
             .captures(def_func)
             .unwrap()
             .get(0)
