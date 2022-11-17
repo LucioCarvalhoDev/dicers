@@ -11,7 +11,18 @@ $ cargo build --release
 
 ## Usage
 
-Call `dicers` will make the program watch for multiple inputs with the format `<quantity>d<faces>`:
+Call `dicers <dice>` to roll only one dice and end the program. `<dice>` follow the format `<quantity?>d<faces>`:
+
+```
+$ dicers 1d20
+[15] // example
+```
+```
+$ dicers d6
+[5] // example
+```
+
+Call `dicers` will make the program watch for multiple inputs of `<dice>`:
 
 ```
 $ dicers
@@ -21,11 +32,8 @@ $ dicers
 [17] // example
 ```
 
-Call `dicers -d <dice>` to roll only one dice and end the program.
-
 ### Flags
 
 | Format | Effect                                            | Exemple                  |
 | ------ | ------------------------------------------------- | ------------------------ |
-| dice   | roll only one dice given as input                 | `--dice 1d6` or `-d 1d6` |
 | output | output mode; `0` for minimalist, `1` for extended | `--output 0` or `-o 0`   |

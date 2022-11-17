@@ -10,7 +10,6 @@ use ron::from_str;
 
 #[derive(Parser, Debug)]
 struct Cli {
-    
     dice: Option<String>,
     #[arg(long, short, default_value_t = 0)]
     output: u8,
