@@ -10,7 +10,7 @@ use ron::from_str;
 
 #[derive(Parser, Debug)]
 struct Cli {
-    #[arg(long, short)]
+    
     dice: Option<String>,
     #[arg(long, short, default_value_t = 0)]
     output: u8,
@@ -55,11 +55,8 @@ fn parser(expression: &str) -> String {
             _ => panic!("Invalid function"),
         };
 
-        // println!("{} | {}", resolved, def_func);
         resolved = resolved.replace(def_func, &format!("{}", res));
     }
-
-    // todo - finalizar parse
 
     resolved
 }
@@ -94,21 +91,13 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use crate::parser;
-
     #[test]
     fn functions() {
-        // use crate::funcs::funcs::*;
+        use crate::funcs::funcs::*;
 
-        // // let example = vec![1, 2, 3, 4, 5, 6];
-        // // assert_eq!(sum(&example), 21);
-        // // assert_eq!(max(&example), 6);
-        // // assert_eq!(min(&example), 1);
-        // // assert_eq!(med(&example), 3.5);
-    }
-
-    #[test]
-    fn paser() {
-        parser("max(2d6)");
+        let example = vec![1, 2, 3, 4, 5, 6];
+        assert_eq!(sum(&example), 21);
+        assert_eq!(max(&example), 6);
+        assert_eq!(min(&example), 1);
     }
 }
