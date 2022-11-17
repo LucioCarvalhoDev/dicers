@@ -38,7 +38,7 @@ pub mod funcs {
         res
     }
 
-    pub fn med(rolls: &Vec<i32>) -> f32 {
+    pub fn _med(rolls: &Vec<i32>) -> f32 {
         let mut res = 0f32;
         let mut i = 0;
 
