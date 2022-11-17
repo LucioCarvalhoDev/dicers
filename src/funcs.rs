@@ -1,4 +1,5 @@
 pub mod funcs {
+
     pub fn sum(rolls: &Vec<i32>) -> i32 {
         let mut res = 0;
         let mut i = 0;
