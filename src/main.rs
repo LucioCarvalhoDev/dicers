@@ -4,7 +4,7 @@ use clap::Parser;
 use lazy_static::lazy_static;
 mod dice;
 mod funcs;
-use crate::dice::dice::Dice;
+use crate::dice::dice::roll;
 use crate::funcs::funcs::*;
 use regex::Regex;
 use ron::from_str;
@@ -35,7 +35,7 @@ fn parser(expression: &str) -> String {
 
     for cap in REG_DICE.captures_iter(expression) {
         let def_dice = cap.get(0).unwrap().as_str();
-        let rolled = format!("{:?}", Dice::new(def_dice).roll());
+        let rolled = format!("{:?}", roll(def_dice));
         expanded = expanded.replace(def_dice, &rolled);
     }
 
